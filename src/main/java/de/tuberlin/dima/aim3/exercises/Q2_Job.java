@@ -19,9 +19,20 @@ public class Q2_Job {
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
+        //        TITLE.AKAS.TSV
+        //        titleId (string) - a tconst, an alphanumeric unique identifier of the title.
+        //        ordering (integer) – a number to uniquely identify rows for a given titleId.
+        //        title (string) – the localized title.
+        //        region (string) - the region for this version of the title.
+        //        language (string) - the language of the title.
+        //        types (array) - Enumerated set of attributes for this alternative title. One or more of the following: "alternative", "dvd","festival", "tv", "video", "working", "original", "imdbDisplay". New values may be added in the future without warning.
+        //        attributes (array) - Additional terms to describe this alternative title, not enumerated.
+        //        isOriginalTitle (boolean) – 0: not original title; 1: original title.
+
         DataSource<Tuple8<String, String, String, String, String, String, String, String>> title_akas = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.akas.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class);
-        // Get all sorted unoriginal transliterated greek titles, merged into one list by the amount of entries they have.
+
+        // QUERY: Get all sorted unoriginal transliterated greek titles, merged into one list by the amount of entries they have.
         var query = title_akas
                 //Map to desired attributes
                 .map(item -> new Tuple5<String, String, String, String, String>(item.f1, item.f2, item.f3, item.f6, item.f7)).returns(Types.TUPLE(Types.STRING, Types.STRING, Types.STRING, Types.STRING, Types.STRING))

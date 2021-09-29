@@ -22,12 +22,20 @@ public class Q1_Job {
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
+        //        NAME.BASICS.TSV
+        //        nconst (string) - alphanumeric unique identifier of the name/person.
+        //        primaryName (string)– name by which the person is most often credited.
+        //        birthYear – in YYYY format.
+        //        deathYear – in YYYY format if applicable, else .
+        //        primaryProfession (array of strings)– the top-3 professions of the person.
+        //        knownForTitles (array of tconsts) – titles the person is known for.
+
         DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\name.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
 
-        // The sorted last name, birthyear, deathyear, age of all actors that have aged between 20 and 30
+        // QUERY: The sorted last name, birthyear, deathyear, age of all actors that have aged between 20 and 30
 
-        var coll = name_basics
+        var query = name_basics
                 // Map to name, birth_year, death_year
                 .map(item -> new Tuple3<String, String, String>(item.f1, item.f2, item.f3)).returns(Types.TUPLE(Types.STRING, Types.STRING, Types.STRING))
                 //Filter out the null lines
@@ -43,12 +51,7 @@ public class Q1_Job {
                 // Sort
                 .sortPartition(0, Order.ASCENDING).setParallelism(1);
 
-
-//        System.out.println(coll);
-//        name_basics.writeAsText("C:\\Users\\Robin\\Documents\\Git\\cloudies_assignment5\\Flink Wordcount Jar Project\\flink-streaming-exercise\\src\\main\\java\\de\\tuberlin\\dima\\aim3\\exercises\\test.txt");
-//        var x = name_basics.collect();
-//        System.out.print(x.indexOf(1));
-        var collected = coll.collect();
+        var collected = query.collect();
         collected.forEach(System.out::println);
     }
 }

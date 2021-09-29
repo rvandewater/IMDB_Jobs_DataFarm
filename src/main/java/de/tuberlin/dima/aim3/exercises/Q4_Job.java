@@ -19,27 +19,24 @@ public class Q4_Job {
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-
-
-//        tconst (string) - alphanumeric unique identifier of the title.
-//        titleType (string) – the type/format of the title (e.g. movie, short,tvseries, tvepisode, video, etc).
-//        primaryTitle (string) – the more popular title / the title used by the filmmakers on promotional materials at the point of release.
-//        originalTitle (string) - original title, in the original language.
-//        isAdult (boolean) - 0: non-adult title; 1: adult title.
-//        startYear (YYYY) – represents the release year of a title. In the case of TV Series, it is the series start year.
-//        endYear (YYYY) – TV Series end year. for all other title types.
-//        runtimeMinutes – primary runtime of the title, in minutes.
-//        genres (string array) – includes up to three genres associated with the title.
+        //        TITLE.BASICS.TSV
+        //        tconst (string) - alphanumeric unique identifier of the title.
+        //        titleType (string) – the type/format of the title (e.g. movie, short,tvseries, tvepisode, video, etc).
+        //        primaryTitle (string) – the more popular title / the title used by the filmmakers on promotional materials at the point of release.
+        //        originalTitle (string) - original title, in the original language.
+        //        isAdult (boolean) - 0: non-adult title; 1: adult title.
+        //        startYear (YYYY) – represents the release year of a title. In the case of TV Series, it is the series start year.
+        //        endYear (YYYY) – TV Series end year. for all other title types.
+        //        runtimeMinutes – primary runtime of the title, in minutes.
+        //        genres (string array) – includes up to three genres associated with the title.
 
         DataSource<Tuple9<String, String, String, String, String, String, String, String, String>> title_basics= env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class,  String.class);
 
+        //        TITLE.RATINGS.TSV
         //        tconst (string) - alphanumeric unique identifier of the title.
-//        ordering (integer) – a number to uniquely identify rows for a given titleId.
-//        nconst (string) - alphanumeric unique identifier of the name/person.
-//        category (string) - the category of job that person was in.
-//        job (string) - the specific job title if applicable, else.
-//        characters (string) - the name of the character played if applicable, else.
+        //        averageRating – weighted average of all the individual user ratings.
+        //        numVotes - number of votes the title has received.
 
         DataSource<Tuple3<String, String, String>> title_ratings = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.ratings.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class);

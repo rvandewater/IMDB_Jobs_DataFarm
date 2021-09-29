@@ -21,22 +21,23 @@ public class Q3_Job {
         final ParameterTool params = ParameterTool.fromArgs(args);
 
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-
-//        nconst (string) - alphanumeric unique identifier of the name/person.
-//        primaryName (string)– name by which the person is most often credited.
-//        birthYear – in YYYY format.
-//        deathYear – in YYYY format if applicable, else .
-//        primaryProfession (array of strings)– the top-3 professions of the person.
-//        knownForTitles (array of tconsts) – titles the person is known for.
+        //        NAME.BASICS.TSV
+        //        nconst (string) - alphanumeric unique identifier of the name/person.
+        //        primaryName (string)– name by which the person is most often credited.
+        //        birthYear – in YYYY format.
+        //        deathYear – in YYYY format if applicable, else .
+        //        primaryProfession (array of strings)– the top-3 professions of the person.
+        //        knownForTitles (array of tconsts) – titles the person is known for.
         DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\name.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
 
-//        tconst (string) - alphanumeric unique identifier of the title.
-//        ordering (integer) – a number to uniquely identify rows for a given titleId.
-//        nconst (string) - alphanumeric unique identifier of the name/person.
-//        category (string) - the category of job that person was in.
-//        job (string) - the specific job title if applicable, else.
-//        characters (string) - the name of the character played if applicable, else.
+        //        TITLE.PRINCIPALS.TSV
+        //        tconst (string) - alphanumeric unique identifier of the title.
+        //        ordering (integer) – a number to uniquely identify rows for a given titleId.
+        //        nconst (string) - alphanumeric unique identifier of the name/person.
+        //        category (string) - the category of job that person was in.
+        //        job (string) - the specific job title if applicable, else.
+        //        characters (string) - the name of the character played if applicable, else.
         DataSource<Tuple6<String, String, String, String, String, String>> title_principals = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.principals.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
 
@@ -56,7 +57,7 @@ public class Q3_Job {
                 .projectSecond(1).projectFirst(5)
                 ;//.returns(Types.TUPLE(Types.STRING, Types.OBJECT_ARRAY(Types.STRING)));
 
-        // Get all the roles from actors, as well as the number of roles played
+        // QUERY: Get all the roles from actors, as well as the number of roles played
         var query = //join.map(item -> new Tuple2<String, String>(item.getField(0), item.getField(1))).returns(Types.TUPLE(Types.STRING, Types.STRING));
         join.map(item -> new Tuple3<String, String, Integer>(item.getField(0), item.getField(1),1)).returns(Types.TUPLE(Types.STRING, Types.STRING, Types.INT))
                 .filter(item -> !item.f1.equals("\\N"))
