@@ -50,6 +50,9 @@ public class Q5_Job {
         DataSource<Tuple8<String, String, String, String, String, String, String, String>> title_akas = env.readCsvFile(DataDirectory+"title.akas.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class);
 
+
+        //QUERY: Get titles after 1950, with a rating of at least 8.5, with more than 10 reviews that are german.
+
         // Parse and filter
         var title_basics_filtered = title_basics
                 // Filter to remove unparsable lines

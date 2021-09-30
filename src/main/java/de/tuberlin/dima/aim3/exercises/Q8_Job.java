@@ -52,6 +52,7 @@ public class Q8_Job {
         //        knownForTitles (array of tconsts) – titles the person is known for.
         DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile(DataDirectory + "name.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
+
         //QUERY: Actors that are primarily known for films/series produced before 1970 with a rating of at least 8.5, with more than 10 reviews
         // Parse and filter
         var title_basics_filtered = title_basics
