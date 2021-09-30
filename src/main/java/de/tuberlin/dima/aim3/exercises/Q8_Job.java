@@ -4,15 +4,15 @@ import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.api.java.tuple.Tuple6;
-import org.apache.flink.api.java.tuple.Tuple8;
 import org.apache.flink.api.java.tuple.Tuple9;
 import org.apache.flink.api.java.utils.ParameterTool;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Q4_Job {
+public class Q8_Job {
     public static void main(String[] args) throws Exception {
 
         final ParameterTool params = ParameterTool.fromArgs(args);
@@ -43,8 +43,16 @@ public class Q4_Job {
         DataSource<Tuple3<String, String, String>> title_ratings = env.readCsvFile(DataDirectory+"title.ratings.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class);
 
-        //QUERY: Films/series produced before the 1950s with a rating of at least 8.5, with more than 10 reviews
-
+        //        NAME.BASICS.TSV
+        //        nconst (string) - alphanumeric unique identifier of the name/person.
+        //        primaryName (string)– name by which the person is most often credited.
+        //        birthYear – in YYYY format.
+        //        deathYear – in YYYY format if applicable, else .
+        //        primaryProfession (array of strings)– the top-3 professions of the person.
+        //        knownForTitles (array of tconsts) – titles the person is known for.
+        DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile(DataDirectory + "name.basics.tsv")
+                .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
+        //QUERY: Actors that are primarily known for films/series produced before 1970 with a rating of at least 8.5, with more than 10 reviews
         // Parse and filter
         var title_basics_filtered = title_basics
                 // Filter to remove unparsable lines
@@ -52,7 +60,7 @@ public class Q4_Job {
                 // Parse to int
                 .map(item -> new Tuple9<String, String, String, String,String,Integer, String, String, String>(item.f0, item.f1, item.f2, item.f3, item.f4, Integer.parseInt(item.f5), item.f6, item.f7, item.f8)).returns(Types.TUPLE(Types.STRING, Types.STRING,Types.STRING,Types.STRING,Types.STRING, Types.INT, Types.STRING,Types.STRING, Types.STRING))
                 // Filter to startyear less than 1950
-                .filter(item -> item.f5<1950);
+                .filter(item -> item.f5<1970);
 
 
         //Parse and Filter
@@ -64,19 +72,29 @@ public class Q4_Job {
                 // Rating at least 8.5, more than 10 reviews
                 .filter(item -> item.f1>8.5&&item.f2>10);
 
+        var name_basics_mapped = name_basics
+                .filter(item -> !item.f0.equals("nconst")&&!item.f4.equals("\\N")&&!item.f2.equals("\\N")&&!item.f3.equals("\\N"))
+                .map(item -> new Tuple6<String, String, Integer, Integer, ArrayList<String>, ArrayList<String>>(item.f0, item.f1, Integer.parseInt(item.f2), Integer.parseInt(item.f3), new ArrayList<String>(Arrays.asList(item.f4.split(","))), new ArrayList<String>(Arrays.asList(item.f5.split(","))))).returns(Types.TUPLE(Types.STRING, Types.STRING, Types.INT, Types.INT, Types.LIST(Types.STRING), Types.LIST(Types.STRING)));
+
         //Join tables
         var join = title_basics_filtered
                 .join(title_ratings_filtered)
                 .where(item -> item.f0)
                 .equalTo(item -> item.f0)
                 // Get Movie/Show title
-                .projectFirst(2)
+                .projectFirst(0,2)
                 // Get rating and number of ratings
                 .projectSecond(1,2)
-                ;//.returns(Types.TUPLE(Types.STRING, Types.OBJECT_ARRAY(Types.STRING)));
+                .map(item -> new Tuple4<String,String, Float, Integer>(item.getField(0), item.getField(1), item.getField(2),item.getField(3))).returns(Types.TUPLE(Types.STRING, Types.STRING, Types.FLOAT, Types.INT));
 
+        var join2 = join
+                .join(name_basics_mapped)
+                .where(item -> item.f0)
+                .equalTo(item -> item.f5.get(0))
+                .projectFirst(1,2,3)
+                .projectSecond(1,2,3,4);
 
-        var collected = join.collect();
+        var collected = join2.collect();
         collected.forEach(System.out::println);
     }
 }
