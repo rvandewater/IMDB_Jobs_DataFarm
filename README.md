@@ -1,7 +1,7 @@
 # IMDB_Jobs_DataFarm
 10 Flink jobs based on the following [Kaggle IMDb Dataset](https://www.kaggle.com/ashirwadsangwan/imdb-dataset/code). 
 They are designed to provide a well rounded use of the complete dataset.
-The following are rough descriptions of the semantics of these queries:
+The following are rough descriptions of the semantics of these queries, with as second line the tables they use:
 1. Q1: The sorted last name, birthyear, deathyear, age of all actors that have aged between 20 and 30
     1. name.basics
 2. Q2: Get all sorted unoriginal transliterated greek titles, merged into one list by the amount of entries they have.
