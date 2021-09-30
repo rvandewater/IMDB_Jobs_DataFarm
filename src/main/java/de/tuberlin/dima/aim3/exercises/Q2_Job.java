@@ -17,6 +17,8 @@ public class Q2_Job {
 
         final ParameterTool params = ParameterTool.fromArgs(args);
 
+        String DataDirectory ="C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\";
+
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         //        TITLE.AKAS.TSV
@@ -29,7 +31,7 @@ public class Q2_Job {
         //        attributes (array) - Additional terms to describe this alternative title, not enumerated.
         //        isOriginalTitle (boolean) – 0: not original title; 1: original title.
 
-        DataSource<Tuple8<String, String, String, String, String, String, String, String>> title_akas = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.akas.tsv")
+        DataSource<Tuple8<String, String, String, String, String, String, String, String>> title_akas = env.readCsvFile(DataDirectory + "title.akas.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class);
 
         // QUERY: Get all sorted unoriginal transliterated greek titles, merged into one list by the amount of entries they have.

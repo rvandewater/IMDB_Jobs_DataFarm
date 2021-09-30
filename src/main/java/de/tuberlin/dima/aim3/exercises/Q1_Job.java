@@ -20,6 +20,8 @@ public class Q1_Job {
 
         final ParameterTool params = ParameterTool.fromArgs(args);
 
+        String DataDirectory ="C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\";
+
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         //        NAME.BASICS.TSV
@@ -30,7 +32,7 @@ public class Q1_Job {
         //        primaryProfession (array of strings)– the top-3 professions of the person.
         //        knownForTitles (array of tconsts) – titles the person is known for.
 
-        DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\name.basics.tsv")
+        DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile(DataDirectory+ "name.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
 
         // QUERY: The sorted last name, birthyear, deathyear, age of all actors that have aged between 20 and 30

@@ -11,6 +11,8 @@ public class Q5_Job {
 
         final ParameterTool params = ParameterTool.fromArgs(args);
 
+        String DataDirectory ="C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\";
+
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         //        TITLE.BASICS.TSV
@@ -24,7 +26,7 @@ public class Q5_Job {
         //        runtimeMinutes – primary runtime of the title, in minutes.
         //        genres (string array) – includes up to three genres associated with the title.
 
-        DataSource<Tuple9<String, String, String, String, String, String, String, String, String>> title_basics= env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.basics.tsv")
+        DataSource<Tuple9<String, String, String, String, String, String, String, String, String>> title_basics= env.readCsvFile(DataDirectory+"title.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class,  String.class);
 
         //        TITLE.RATINGS.TSV
@@ -32,7 +34,7 @@ public class Q5_Job {
         //        averageRating – weighted average of all the individual user ratings.
         //        numVotes - number of votes the title has received.
 
-        DataSource<Tuple3<String, String, String>> title_ratings = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.ratings.tsv")
+        DataSource<Tuple3<String, String, String>> title_ratings = env.readCsvFile(DataDirectory+"title.ratings.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class);
 
         //        TITLE.AKAS.TSV
@@ -45,7 +47,7 @@ public class Q5_Job {
         //        attributes (array) - Additional terms to describe this alternative title, not enumerated.
         //        isOriginalTitle (boolean) – 0: not original title; 1: original title.
 
-        DataSource<Tuple8<String, String, String, String, String, String, String, String>> title_akas = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.akas.tsv")
+        DataSource<Tuple8<String, String, String, String, String, String, String, String>> title_akas = env.readCsvFile(DataDirectory+"title.akas.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class);
 
         // Parse and filter

@@ -20,6 +20,8 @@ public class Q3_Job {
 
         final ParameterTool params = ParameterTool.fromArgs(args);
 
+        String DataDirectory ="C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\";
+
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         //        NAME.BASICS.TSV
         //        nconst (string) - alphanumeric unique identifier of the name/person.
@@ -28,7 +30,7 @@ public class Q3_Job {
         //        deathYear – in YYYY format if applicable, else .
         //        primaryProfession (array of strings)– the top-3 professions of the person.
         //        knownForTitles (array of tconsts) – titles the person is known for.
-        DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\name.basics.tsv")
+        DataSource<Tuple6<String, String, String, String, String, String>> name_basics = env.readCsvFile(DataDirectory + "name.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
 
         //        TITLE.PRINCIPALS.TSV
@@ -38,7 +40,7 @@ public class Q3_Job {
         //        category (string) - the category of job that person was in.
         //        job (string) - the specific job title if applicable, else.
         //        characters (string) - the name of the character played if applicable, else.
-        DataSource<Tuple6<String, String, String, String, String, String>> title_principals = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.principals.tsv")
+        DataSource<Tuple6<String, String, String, String, String, String>> title_principals = env.readCsvFile(DataDirectory + "title.principals.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class);
 
         // All the occurrences of actors from the 1960's

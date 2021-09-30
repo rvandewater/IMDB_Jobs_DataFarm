@@ -17,6 +17,8 @@ public class Q4_Job {
 
         final ParameterTool params = ParameterTool.fromArgs(args);
 
+        String DataDirectory ="C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\";
+
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         //        TITLE.BASICS.TSV
@@ -30,7 +32,7 @@ public class Q4_Job {
         //        runtimeMinutes – primary runtime of the title, in minutes.
         //        genres (string array) – includes up to three genres associated with the title.
 
-        DataSource<Tuple9<String, String, String, String, String, String, String, String, String>> title_basics= env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.basics.tsv")
+        DataSource<Tuple9<String, String, String, String, String, String, String, String, String>> title_basics= env.readCsvFile(DataDirectory+"title.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class,  String.class);
 
         //        TITLE.RATINGS.TSV
@@ -38,7 +40,7 @@ public class Q4_Job {
         //        averageRating – weighted average of all the individual user ratings.
         //        numVotes - number of votes the title has received.
 
-        DataSource<Tuple3<String, String, String>> title_ratings = env.readCsvFile("C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\title.ratings.tsv")
+        DataSource<Tuple3<String, String, String>> title_ratings = env.readCsvFile(DataDirectory+"title.ratings.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class);
 
         // Parse and filter
