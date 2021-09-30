@@ -16,8 +16,6 @@ public class Q6_Job {
 
         String DataDirectory ="C:\\Users\\Robin\\Documents\\experimentdata\\IMDB\\";
 
-
-
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         //        NAME.BASICS.TSV
@@ -75,7 +73,7 @@ public class Q6_Job {
         DataSource<Tuple9<String, String, String, String, String, String, String, String, String>> title_basics= env.readCsvFile(DataDirectory +"\\title.basics.tsv")
                 .fieldDelimiter("\t").types(String.class, String.class, String.class, String.class, String.class,String.class, String.class, String.class,  String.class);
 
-        // QUERY: Get all the actors of german movies, with the types of movie, ratings, year, years born/death , roles, jobs
+        // QUERY: Get all the actors of german movies, with the types of movie, ratings, year, years born/death , roles, jobs. 4 joins involved.
         // Example: (tt1439063,Folge #3.5,de,\N,tvEpisode,Episode #3.5,Episode #3.5,6.7,6,10,nm1400170,actress,\N,["Heidi Klum","Anna Heesch","Tanja Seifert"],Martina Hill,1974,\N,actress,writer,soundtrack,tt1441143,tt0115088,tt2119785,tt0982599)
         var title_akas_filtered = title_akas
                 .filter(item -> item.f4.equals("de"));
