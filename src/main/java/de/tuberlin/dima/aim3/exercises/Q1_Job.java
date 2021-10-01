@@ -3,6 +3,7 @@ package de.tuberlin.dima.aim3.exercises;
 import org.apache.flink.api.common.operators.Order;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.FilterOperator;
 import org.apache.flink.api.java.tuple.Tuple4;
@@ -53,7 +54,12 @@ public class Q1_Job {
                 // Sort
                 .sortPartition(0, Order.ASCENDING).setParallelism(1);
 
-        var collected = query.collect();
-        collected.forEach(System.out::println);
+//        var collected = query.collect();
+//        collected.forEach(System.out::println);
+        query.output(new DiscardingOutputFormat<>());
+        var Saver = new SaveExecutionPlan();
+        Saver.GetExecutionPlan(env);
+        Saver.SaveExecutionPlan("Q1_Job", env);
+
     }
 }

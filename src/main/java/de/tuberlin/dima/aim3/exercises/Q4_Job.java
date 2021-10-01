@@ -2,6 +2,7 @@ package de.tuberlin.dima.aim3.exercises;
 
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.api.java.tuple.Tuple6;
@@ -76,7 +77,11 @@ public class Q4_Job {
                 ;//.returns(Types.TUPLE(Types.STRING, Types.OBJECT_ARRAY(Types.STRING)));
 
 
-        var collected = join.collect();
-        collected.forEach(System.out::println);
+//        var collected = join.collect();
+//        collected.forEach(System.out::println);
+        join.output(new DiscardingOutputFormat<>());
+        var Saver = new SaveExecutionPlan();
+        Saver.GetExecutionPlan(env);
+        Saver.SaveExecutionPlan("Q1_Job", env);
     }
 }
