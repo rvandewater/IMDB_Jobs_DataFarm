@@ -5,6 +5,7 @@ import org.apache.flink.api.common.operators.Order;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.operators.JoinOperator;
 import org.apache.flink.api.java.tuple.*;
@@ -73,7 +74,11 @@ public class Q3_Job {
                 });
 
 
-        var collected = query.collect();
-        collected.forEach(System.out::println);
+//        var collected = query.collect();
+//        collected.forEach(System.out::println);
+        query.output(new DiscardingOutputFormat<>());
+        var Saver = new SaveExecutionPlan();
+        Saver.GetExecutionPlan(env);
+        Saver.SaveExecutionPlan("Q3_Job", env);
     }
 }

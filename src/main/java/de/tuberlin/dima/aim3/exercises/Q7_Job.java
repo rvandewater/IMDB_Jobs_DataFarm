@@ -2,6 +2,7 @@ package de.tuberlin.dima.aim3.exercises;
 
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.*;
 import org.apache.flink.api.java.utils.ParameterTool;
@@ -103,37 +104,14 @@ public class Q7_Job {
 
 
 
-//        var join = title_akas_filtered
-//                .join(title_basics)
-//                .where(item -> item.f0)
-//                .equalTo(item -> item.f0)
-//                .projectFirst(0,2,4,5).projectSecond(1,2,3)
-//                .map(item -> new Tuple7<String, String, String, String, String, String, String>(item.getField(0), item.getField(1), item.getField(2),item.getField(3), item.getField(4), item.getField(5), item.getField(6))).returns(Types.TUPLE(Types.STRING, Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING));
-//
-//        var join2 = join.join(title_ratings)
-//                .where(item -> item.f0)
-//                .equalTo(item -> item.f0)
-//                .projectFirst(0,1,2,3,4,5,6)
-//                .projectSecond(1,2)
-//                .map(item -> new Tuple9<String, String, String, String, String, String, String,String, String>(item.getField(0), item.getField(1), item.getField(2),item.getField(3), item.getField(4), item.getField(5), item.getField(6), item.getField(7), item.getField(8))).returns(Types.TUPLE(Types.STRING, Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING));
-//
-//
-//        var join3 = join2.join(title_principals)
-//                .where(item -> item.f0)
-//                .equalTo(item -> item.f0)
-//                .projectFirst(0,1,2,3,4,5,6,7,8)
-//                .projectSecond(1,2,3,4,5)
-//                .map(item -> new Tuple14<String, String, String, String, String, String, String,String, String, String,String, String, String,String>(item.getField(0), item.getField(1), item.getField(2),item.getField(3), item.getField(4), item.getField(5), item.getField(6), item.getField(7), item.getField(8), item.getField(9),item.getField(10), item.getField(11),item.getField(12),item.getField(13))).returns(Types.TUPLE(Types.STRING, Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING,Types.STRING, Types.STRING,Types.STRING, Types.STRING,Types.STRING, Types.STRING));
-//
-//
-//        var join4 = join3.join(name_basics)
-//                .where(item -> item.f10)
-//                .equalTo(item -> item.f0)
-//                .projectFirst(0,1,2,3,4,5,6,7,8,9,10,11,12,13)
-//                .projectSecond(1,2,3,4,5);
+//        var collected = join3.collect();
+//        collected.forEach(System.out::println);
 
-
-        var collected = join3.collect();
-        collected.forEach(System.out::println);
+        // Collect output and plan information
+        var query = join3;
+        query.output(new DiscardingOutputFormat<>());
+        var Saver = new SaveExecutionPlan();
+        Saver.GetExecutionPlan(env);
+        Saver.SaveExecutionPlan("Q7_Job", env);
     }
 }

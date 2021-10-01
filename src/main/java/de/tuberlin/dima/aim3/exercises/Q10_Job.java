@@ -3,6 +3,7 @@ package de.tuberlin.dima.aim3.exercises;
 import org.apache.flink.api.common.operators.Order;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.*;
 import org.apache.flink.api.java.utils.ParameterTool;
@@ -96,7 +97,13 @@ public class Q10_Job {
 
 
 
-        var collected = query.collect();
-        collected.forEach(System.out::println);
+//        var collected = query.collect();
+//        collected.forEach(System.out::println);
+
+        // Collect output and plan information
+        query.output(new DiscardingOutputFormat<>());
+        var Saver = new SaveExecutionPlan();
+        Saver.GetExecutionPlan(env);
+        Saver.SaveExecutionPlan("Q10_Job", env);
     }
 }

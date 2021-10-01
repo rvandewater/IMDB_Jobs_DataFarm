@@ -26,7 +26,7 @@ public class SaveExecutionPlan {
         this.execPlan = env.getExecutionPlan();
         this.execResult = env.execute();
         this.runTime = execResult.getNetRuntime();
-        System.out.println("Runtime execution: "+execResult.getNetRuntime());
+
     }
 
     public void SaveExecutionPlan(String jobID, ExecutionEnvironment env) throws FileNotFoundException {
@@ -47,6 +47,7 @@ public class SaveExecutionPlan {
 //                "}"
         pw.write(reachExecPlan);
         pw.close();
+        System.out.println("Runtime execution "+ jobID+" :"+this.runTime);
 
     }
 }

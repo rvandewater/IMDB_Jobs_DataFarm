@@ -2,6 +2,7 @@ package de.tuberlin.dima.aim3.exercises;
 
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.api.java.io.DiscardingOutputFormat;
 import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.*;
 import org.apache.flink.api.java.utils.ParameterTool;
@@ -91,10 +92,16 @@ public class Q5_Job {
                 .projectFirst(1,2,3)
                 .projectSecond(4);
 
-        var result = join2.map(item -> new Tuple4<String, Float, Integer, String>(item.getField(0), item.getField(1),item.getField(2),item.getField(3))).returns(Types.TUPLE(Types.STRING,Types.FLOAT, Types.INT, Types.STRING))
+        var query = join2.map(item -> new Tuple4<String, Float, Integer, String>(item.getField(0), item.getField(1),item.getField(2),item.getField(3))).returns(Types.TUPLE(Types.STRING,Types.FLOAT, Types.INT, Types.STRING))
                 .filter(item -> item.f3.equals("de"));
 
-        var collected = result.collect();
-        collected.forEach(System.out::println);
+//        var collected = result.collect();
+//        collected.forEach(System.out::println);
+
+        // Collect output and plan information
+        query.output(new DiscardingOutputFormat<>());
+        var Saver = new SaveExecutionPlan();
+        Saver.GetExecutionPlan(env);
+        Saver.SaveExecutionPlan("Q5_Job", env);
     }
 }

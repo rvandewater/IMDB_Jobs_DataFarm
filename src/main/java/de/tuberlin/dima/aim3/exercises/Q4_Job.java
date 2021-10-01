@@ -79,9 +79,12 @@ public class Q4_Job {
 
 //        var collected = join.collect();
 //        collected.forEach(System.out::println);
-        join.output(new DiscardingOutputFormat<>());
+        var query = join;
+
+        // Collect output and plan information
+        query.output(new DiscardingOutputFormat<>());
         var Saver = new SaveExecutionPlan();
         Saver.GetExecutionPlan(env);
-        Saver.SaveExecutionPlan("Q1_Job", env);
+        Saver.SaveExecutionPlan("Q4_Job", env);
     }
 }
